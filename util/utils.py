@@ -21,11 +21,13 @@ TRUTHY_STRINGS = {"on", "true", "1"}
 
 logger = getLogger()
 
+
 @torch.jit.script
 def quantizationLoss(hashrepresentations_bs, hashcodes_bs):
     batch_size, bit = hashcodes_bs.shape
     quantization_loss = torch.sum(torch.pow(hashcodes_bs - hashrepresentations_bs, 2)) / (batch_size * bit)
     return quantization_loss
+
 
 @torch.jit.script
 def multilabelsimilarityloss_KL(labels_batchsize, labels_train, hashrepresentations_batchsize,
@@ -41,24 +43,16 @@ def multilabelsimilarityloss_KL(labels_batchsize, labels_train, hashrepresentati
     labelsSimilarity = torch.matmul(labels_batchsize, labels_train.t())  # [0,1]
     hashrepresentationsSimilarity = torch.relu(
         torch.matmul(hashrepresentations_batchsize, hashrepresentations__train.t()))  # [0,1]
-    a1 = labelsSimilarity - hashrepresentationsSimilarity
-    a2 = torch.log((1e-5 + labelsSimilarity) / (1e-5 + hashrepresentationsSimilarity))
-    # print(a1.shape)
-    # print(a2.shape)
-    # torch.mul(a1, a2)
-    # KLloss = (torch.sum(a1) * torch.sum(a2)) / ( num_train * batch_size)
-    # KLloss = (torch.sum(a1) + torch.sum(a2)) / ( num_train * batch_size)
     KLloss2 = torch.sum(torch.relu(labelsSimilarity - hashrepresentationsSimilarity)) / (num_train * batch_size)
     KLloss3 = torch.sum(torch.relu(hashrepresentationsSimilarity - labelsSimilarity)) / (num_train * batch_size)
     MSEloss = torch.sum(torch.pow(hashrepresentationsSimilarity - labelsSimilarity, 2)) / (num_train * batch_size)
-    # KLloss =  KLloss + 0.5 * KLloss2 + 0.5 * KLloss3 + MSEloss
     KLloss = 0.5 * KLloss2 + 0.5 * KLloss3 + MSEloss
-    # print('KLloss1 = %4.4f, KLloss2 = %4.4f'%(KLloss1 , KLloss2))
     return KLloss
+
 
 @torch.jit.script
 def multilabelsimilarityloss_MSE(labels_batchsize, labels_train, hashrepresentations_batchsize,
-                                hashrepresentations__train):
+                                 hashrepresentations__train):
     batch_size = labels_batchsize.shape[0]
     num_train = labels_train.shape[0]
     labels_batchsize = labels_batchsize / torch.sqrt(torch.sum(torch.pow(labels_batchsize, 2), 1)).unsqueeze(1)
@@ -73,6 +67,7 @@ def multilabelsimilarityloss_MSE(labels_batchsize, labels_train, hashrepresentat
     MSEloss = torch.sum(torch.pow(hashrepresentationsSimilarity - labelsSimilarity, 2)) / (num_train * batch_size)
 
     return MSEloss
+
 
 def calc_hamming_dist(B1, B2):
     q = B2.shape[1]
@@ -177,11 +172,7 @@ class Visualizer(object):
         # 保存（’loss',23） 即loss的第23个点
         self.index = {}
         self.log_text = ''
-        self.env = env
-    
-    def save(self):
-        self.vis.save([self.env])
- 
+
     def reinit(self, env='default', **kwargs):
         """
         修改visdom的配置
