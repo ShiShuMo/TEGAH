@@ -6,7 +6,7 @@
 This is the source code of paper "Text-Enhanced Graph Attention Hashing for Cross-Modal Retrieval".
 
 
-TWe have uploaded the complete source code and the generated hash codes to the repository for testing. The test.zip archive contains the test scripts we provided for evaluation purposes..
+We have uploaded the complete source code and the generated hash codes to the repository for testing. The test.zip archive contains the test scripts we provided for evaluation purposes..
 
 ### 2. Requirements
 
