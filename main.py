@@ -19,7 +19,7 @@ from models.label_model import LABEL
 from models.basic_module import Wasserstein
 import timm
 from triplet_loss import *
-from util.utils import calc_map_k, pr_curve, p_topK, Visualizer, ContrastiveLoss, Encoder, Decoder, pairwise_loss, CrossModalLoss, multilabelsimilarityloss_KL, quantizationLoss
+from util.utils import calc_map_k, pr_curve, p_topK, Visualizer, multilabelsimilarityloss_KL, quantizationLoss
 from datasets.data_handler import load_data
 import time
 import pickle

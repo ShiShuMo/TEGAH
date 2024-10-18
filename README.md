@@ -6,7 +6,7 @@
 This is the source code of paper "Text-Enhanced Graph Attention Hashing for Cross-Modal Retrieval".
 
 
-The code is being collated and will soon be uploaded, temporarily releasing the generated three-bit hash code file for Hamming distance calculation.
+TWe have uploaded the complete source code and the generated hash codes to the repository for testing. The test.zip archive contains the test scripts we provided for evaluation purposes..
 
 ### 2. Requirements
 
@@ -45,6 +45,9 @@ After preparing the python environment, and dataset, we can train the TEGAH mode
 
 ### 5. Test
 
+unzip test.zip
+
+python test.py
 
 ## Acknowledegements
 [GCDH](https://github.com/Zjut-MultimediaPlus/GCDH)
